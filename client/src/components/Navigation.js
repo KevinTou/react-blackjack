@@ -17,6 +17,16 @@ const StyledNav = styled.nav``;
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   margin-left: 1.5rem;
+  color: #000000;
+  font-size: 1.2rem;
+
+  &.active {
+    border-bottom: 2px solid black;
+  }
+
+  &:hover {
+    border-bottom: 2px solid grey;
+  }
 `;
 
 export default Navigation;
