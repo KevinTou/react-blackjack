@@ -1,9 +1,17 @@
 import React from "react";
 
-const Card = props => {
+const Card = ({ card }) => {
   return (
-    <div>
-      <h1>Card</h1>
+    <div
+      style={{
+        maxWidth: "15%"
+      }}
+    >
+      <img
+        src={card.images.png}
+        alt={`${card.value} OF ${card.suit}`}
+        style={{ width: "100%" }}
+      />
     </div>
   );
 };

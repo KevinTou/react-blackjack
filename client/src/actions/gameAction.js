@@ -38,9 +38,11 @@ export const getNewShuffledDeck = amount => {
 
 export const DRAW_CARD_START = "DRAW_CARD_START";
 export const DRAW_CARD_SUCCESS = "DRAW_CARD_SUCCESS";
+export const PLAYER_DRAW_CARD_SUCCESS = "PLAYER_DRAW_CARD_SUCCESS";
+export const DEALER_DRAW_CARD_SUCCESS = "DEALER_DRAW_CARD_SUCCESS";
 export const DRAW_CARD_FAILURE = "DRAW_CARD_FAILURE";
 
-export const drawCard = (deck_id, amount = 1) => {
+export const drawCard = (deck_id, target, amount = 1) => {
   return async dispatch => {
     dispatch({ type: DRAW_CARD_START });
 
@@ -50,7 +52,13 @@ export const drawCard = (deck_id, amount = 1) => {
       );
       console.log("results: ", res.data);
 
-      dispatch({ type: DRAW_CARD_SUCCESS, payload: res.data });
+      if (target === "player") {
+        dispatch({ type: PLAYER_DRAW_CARD_SUCCESS, payload: res.data });
+      } else if (target === "dealer") {
+        dispatch({ type: DEALER_DRAW_CARD_SUCCESS, payload: res.data });
+      } else {
+        dispatch({ type: DRAW_CARD_SUCCESS, payload: res.data });
+      }
 
       return res.data.cards[0];
     } catch (err) {
@@ -107,3 +115,15 @@ export const shuffleDeck = deck_id => {
     "remaining": 52
   }
   */
+
+export const NEW_GAME = "NEW_GAME";
+
+export const newGame = () => {
+  return dispatch => dispatch({ type: NEW_GAME });
+};
+
+export const BURN_CARD_TOGGLE = "BURN_CARD_TOGGLE";
+
+export const burnCard = () => {
+  return dispatch => dispatch({ type: BURN_CARD_TOGGLE });
+};
