@@ -4,10 +4,14 @@ import {
   NEW_DECK_FAILURE,
   DRAW_CARD_START,
   DRAW_CARD_SUCCESS,
+  PLAYER_DRAW_CARD_SUCCESS,
+  DEALER_DRAW_CARD_SUCCESS,
   DRAW_CARD_FAILURE,
   SHUFFLE_START,
   SHUFFLE_SUCCESS,
-  SHUFFLE_FAILURE
+  SHUFFLE_FAILURE,
+  NEW_GAME,
+  BURN_CARD_TOGGLE
 } from "../actions";
 
 const initialState = {
@@ -16,6 +20,7 @@ const initialState = {
   dealerHand: [],
   remainingCards: 0,
   gameOver: true,
+  burn: false,
   isLoading: false,
   error: false
 };
@@ -39,10 +44,23 @@ const gameReducer = (state = initialState, { type, payload }) => {
         dealerHand: [],
         isLoading: false
       };
+    case PLAYER_DRAW_CARD_SUCCESS:
+      return {
+        ...state,
+        playerHand: [...state.playerHand, ...payload.cards],
+        remainingCards: payload.remaining,
+        isLoading: false
+      };
+    case DEALER_DRAW_CARD_SUCCESS:
+      return {
+        ...state,
+        dealerHand: [...state.playerHand, ...payload.cards],
+        remainingCards: payload.remaining,
+        isLoading: false
+      };
     case DRAW_CARD_SUCCESS:
       return {
         ...state,
-        playerHand: [...state.playerHand, payload.cards[0]],
         remainingCards: payload.remaining,
         isLoading: false
       };
@@ -53,6 +71,19 @@ const gameReducer = (state = initialState, { type, payload }) => {
         ...state,
         error: payload,
         isLoading: false
+      };
+    case NEW_GAME:
+      return {
+        ...state,
+        playerHand: [],
+        dealerHand: [],
+        isLoading: false,
+        error: false
+      };
+    case BURN_CARD_TOGGLE:
+      return {
+        ...state,
+        burn: !state.burn
       };
     default:
       return state;
